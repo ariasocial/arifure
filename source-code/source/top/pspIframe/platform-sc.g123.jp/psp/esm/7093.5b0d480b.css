@@ -1,0 +1,42 @@
+@supports(-webkit-appearance: -apple-pay-button) {
+    .apple-pay-button-black {
+        -apple-pay-button-style:#000;
+        appearance: -apple-pay-button!important;
+        display: inline-block;
+        height: 3rem;
+        width: 100%
+    }
+
+    .apple-pay-button-white {
+        -apple-pay-button-style: #fff
+    }
+
+    .apple-pay-button-white-with-line {
+        -apple-pay-button-style: white-outline
+    }
+}
+
+@supports not (-webkit-appearance: -apple-pay-button) {
+    .apple-pay-button-black {
+        background-color:#000;
+        background-image: -webkit-named-image(apple-pay-logo-white);
+        background-position: 50%50%;
+        background-repeat: no-repeat;
+        background-size: 100%60%;
+        border-radius: .25rem;
+        box-sizing: border-box;
+        display: inline-block;
+        height: 3rem;
+        padding: 0;
+        width: 100%
+    }
+
+    .apple-pay-button-white,.apple-pay-button-white-with-line {
+        background-color: #fff;
+        background-image: -webkit-named-image(apple-pay-logo-black)
+    }
+
+    .apple-pay-button-white-with-line {
+        border: .5px solid#000
+    }
+}

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "arifure", # wrangler.tomlのnameと同じ
+  "name": "arifure",
   "version": "1.0.0",
   "description": "A Cloudflare Workers project for static site hosting.",
   "scripts": {

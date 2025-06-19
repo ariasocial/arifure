@@ -6,8 +6,13 @@
     <title>ガチャポイント計算機</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="no-direct-access.js"></script> 
+    <style>
+        /* JavaScriptが無効な場合にコンテンツが見えないようにする（任意） */
+        html.no-js-hidden { display: none; }
+    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen p-4 no-js-hidden">
     <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">ガチャポイント計算機</h1>
 
@@ -62,6 +67,10 @@
         </div>
     </div>
 
+    <script>
+        // JavaScriptが実行されたら、非表示用のクラスを削除してコンテンツを表示
+        document.body.classList.remove('no-js-hidden');
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

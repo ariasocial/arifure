@@ -1,0 +1,6 @@
+name = "arifure" # Cloudflareダッシュボードで設定するWorker名に合わせる
+main = "worker-site/index.js"     # Workerスクリプトのパス（後で作成します）
+compatibility_date = "2025-06-19" # 今日の日付か、それ以降の日付
+
+[site]
+bucket = "gp-calculator" # 静的ファイル（index.html, style.css, script.jsなど）が格納されているディレクトリ

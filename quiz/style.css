@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.quiz-item {
+    background-color: #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.quiz-item p {
+    margin: 0 0 5px 0;
+}
+.quiz-item .question {
+    font-weight: bold;
+    color: #333;
+}
+.quiz-item .answer {
+    color: #007bff; /* 青色で〇/✖を表示 */
+    font-weight: bold;
+}
+.no-results {
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}

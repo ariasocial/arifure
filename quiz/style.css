@@ -24,7 +24,7 @@ body {
     font-weight: bold;
 }
 .answer-correct {
-    color: #4169e1; /* 青色 */
+    color: #28a745; /* 緑色 */
 }
 .answer-incorrect {
     color: #e14141; /* 赤色 */

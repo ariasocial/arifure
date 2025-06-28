@@ -43,9 +43,14 @@ function searchQuizzes() {
             questionP.textContent = `Q: ${quiz.question}`;
             
             const answerP = document.createElement('p');
-            answerP.className = 'answer';
-            // 回答が'y'なら'〇', 'n'なら'✖'と表示
+            // 回答が'y'なら'〇', 'n'なら'✖'と表示し、色を条件分岐
             answerP.textContent = `A: ${quiz.answer === 'y' ? '〇' : '✖'}`;
+            answerP.classList.add('answer'); // 既存のanswerクラスを追加
+            if (quiz.answer === 'y') {
+                answerP.classList.add('answer-correct'); // 'y'の場合は青色
+            } else {
+                answerP.classList.add('answer-incorrect'); // 'n'の場合は赤色
+            }
             
             quizItem.appendChild(questionP);
             quizItem.appendChild(answerP);

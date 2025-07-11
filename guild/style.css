@@ -1,0 +1,130 @@
+/* Interフォントを読み込みます (Googleのデザインに近い) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa; /* Googleの背景色に近い明るいグレー */
+}
+.container {
+    max-width: 450px; /* 現在の最大幅設定 */
+    margin: 40px auto;
+    padding: 48px 40px 36px; /* Googleのログインページに近いパディング */
+    background-color: #ffffff;
+    border-radius: 8px; /* Googleのカードに近い角丸 */
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15); /* Googleのカードシャドウに近い */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 中央揃え */
+}
+.form-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.form-header h1 {
+    font-size: 24px; /* より大きなタイトル */
+    font-weight: 500; /* Googleのタイトルに近い */
+    color: #202124;
+    margin-top: 16px; /* Googleのロゴとタイトルの間隔 */
+}
+.form-header p {
+    font-size: 16px;
+    color: #5f6368;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+.form-group label {
+    font-weight: 500; /* より細いフォント */
+    color: #3c4043;
+    margin-bottom: 6px;
+    display: block;
+    font-size: 14px;
+}
+.form-group input {
+    width: 100%;
+    padding: 14px 16px; /* Googleの入力フィールドに近いパディング */
+    border: 1px solid #dadce0; /* Googleの入力フィールドのボーダー色 */
+    border-radius: 4px; /* Googleの入力フィールドの角丸 */
+    font-size: 16px;
+    color: #202124;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+/* フォーカス時の青い枠線とシャドウを削除 */
+.form-group input:focus {
+    outline: none;
+    border-color: #dadce0; /* 元のボーダー色を維持 */
+    box-shadow: none; /* フォーカス時のシャドウを削除 */
+}
+/* エラー時の赤い枠線 */
+.form-group input.error {
+    border-color: #d93025; /* Googleのエラーメッセージ文字色と同じ赤色 */
+    box-shadow: 0 0 0 1px #d93025; /* オプション: 赤いシャドウ */
+}
+.btn-submit {
+    background-color: #1a73e8; /* Googleのプライマリボタンの青色 */
+    color: white;
+    padding: 10px 24px; /* Googleのボタンに近いパディング */
+    border-radius: 4px; /* Googleのボタンの角丸 */
+    font-weight: 500; /* Googleのボタンのフォントウェイト */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* ボタンのシャドウ */
+    font-size: 16px;
+}
+.btn-submit:hover {
+    background-color: #1669db; /* ホバー時の少し濃い青 */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+.btn-submit:active {
+    background-color: #145cb3; /* アクティブ時のさらに濃い青 */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.message-box {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 14px;
+}
+.message-box.success {
+    background-color: #e6f4ea; /* Googleの成功メッセージ背景色 */
+    color: #1e8e3e; /* Googleの成功メッセージ文字色 */
+    border: 1px solid #c3e8cb;
+}
+.message-box.error {
+    background-color: #fce8e6; /* Googleのエラーメッセージ背景色 */
+    color: #d93025; /* Googleのエラーメッセージ文字色 */
+    border: 1px solid #f0b8b5;
+}
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 20px; /* スピナーを少し小さく */
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Sphireテキストのグラデーションスタイル */
+.sphire-gradient {
+    font-size: 36px; /* 少し大きめのフォントサイズ */
+    font-weight: 700; /* 太めのフォント */
+    /* グラデーションの色と方向を更新 (左下から右上、色の順番を反転し、停止位置を削除) */
+    background: linear-gradient(to top left, #28B0FA, #C429D9, #FC9D21); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* fallback for non-webkit browsers */
+    display: inline-block; /* グラデーションが適用されるように */
+    margin-bottom: 8px; /* 下の要素との間隔 */
+    /* グラデーションのサイズをテキスト全体に合わせる */
+    background-size: 100% 100%; 
+    background-position: center center; 
+}

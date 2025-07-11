@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ギルド参加申請</title>
+    <!-- Tailwind CSS CDNを読み込みます -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 外部CSSファイルを読み込みます -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Interフォントを読み込みます -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container">
+        <div class="form-header">
+            <!-- 「Sphire」ロゴとグラデーション -->
+            <span class="sphire-gradient">Sphire</span>
+            <h1 class="text-gray-800">ギルド参加申請</h1>
+        </div>
+
+        <form id="guildApplicationForm" class="w-full space-y-6" novalidate>
+            <!-- Discordユーザー名とゲーム内ユーザー名を横並びにするFlexコンテナ -->
+            <div class="flex flex-col md:flex-row md:space-x-4 space-y-6 md:space-y-0">
+                <div class="form-group flex-1">
+                    <label for="discordUsername">Discordユーザー名</label>
+                    <input type="text" id="discordUsername" name="discordUsername" placeholder="例: YourDiscord#1234" required>
+                </div>
+
+                <div class="form-group flex-1">
+                    <label for="gameUsername">ゲーム内ユーザー名</label>
+                    <input type="text" id="gameUsername" name="gameUsername" placeholder="例: GamePlayerName" required>
+                </div>
+            </div>
+
+            <!-- サーバー番号とギルド名を横並びにするFlexコンテナ -->
+            <div class="flex flex-col md:flex-row md:space-x-4 space-y-6 md:space-y-0">
+                <div class="form-group flex-1">
+                    <label for="serverNumber">サーバー番号</label>
+                    <input type="text" id="serverNumber" name="serverNumber" placeholder="例: S123" required>
+                </div>
+
+                <div class="form-group flex-1">
+                    <label for="guildName">ギルド名</label>
+                    <input type="text" id="guildName" name="guildName" placeholder="例: AwesomeGuild" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmationImage">所属確認画像URL</label>
+                <input type="url" id="confirmationImage" name="confirmationImage" placeholder="例: https://i.imgur.com/yourimage.png" required>
+                <p class="text-xs text-gray-500 mt-1">ImgurやGyazoなどの画像ホスティングサービスにアップロードした画像のURLを貼り付けてください。</p>
+            </div>
+
+            <button type="submit" class="btn-submit w-full flex items-center justify-center">
+                <span id="submitButtonText">申請を送信</span>
+                <div id="loadingSpinner" class="loading-spinner hidden"></div>
+            </button>
+        </form>
+
+        <div id="messageBox" class="message-box hidden"></div>
+    </div>
+
+    <!-- 外部JavaScriptファイルを読み込みます (bodyの閉じタグの直前が推奨) -->
+    <script src="script.js"></script>
+</body>
+</html>

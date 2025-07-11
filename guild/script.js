@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ここにデプロイしたGoogle Apps ScriptのウェブアプリURLを設定してください。
     // 重要: これはDiscordのウェブフックURLではありません！
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyqLXABoaMuNkD9V4onc17njDb2QgFQJ0PjlCXMAWqLLZJWME59PF-ALdGVLcV6L5qn/exec'; // <-- 提供されたGASウェブアプリのURLを貼り付けました
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzuVPa2zMv8f5Yc_-d620W4g2455N6F8lF_TEkDN0BQ2V3NKXMfrQX7HNU_86s3W6ZY/exec'; // <-- 提供されたGASウェブアプリのURLを貼り付けました
 
     // すべての必須入力フィールドを取得
     const requiredInputs = form.querySelectorAll('input[required]');

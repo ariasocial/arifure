@@ -137,14 +137,10 @@ function processGuild(group, container, roleMap) {
 
 function clearInput() {
     document.getElementById('jsonData').value = '';
-    const guild1Container = document.getElementById('guild1-container');
-    const guild2Container = document.getElementById('guild2-container');
-    if (guild1Container) {
-        guild1Container.innerHTML = '';
-        guild1Container.style.display = 'none'; // コンテナを非表示に戻す
-    }
-    if (guild2Container) {
-        guild2Container.innerHTML = '';
-        guild2Container.style.display = 'none'; // コンテナを非表示に戻す
-    }
+    const resultDiv = document.getElementById('result');
+    // 結果表示エリアを初期状態に戻す
+    resultDiv.innerHTML = `
+        <div id="guild1-container" class="guild-container"></div>
+        <div id="guild2-container" class="guild-container"></div>
+    `;
 }

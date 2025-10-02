@@ -20,14 +20,15 @@
 </div>
 
 <div class="container">
-    <p>以下のテキストエリアにJSONデータを貼り付けて、ボタンをクリックしてください。</p>
     <textarea id="jsonData"></textarea>
     <div class="button-group">
         <button onclick="extractUsers()">ユーザーを抽出</button>
         <button onclick="clearInput()" class="button-secondary">入力をクリア</button>
     </div>
-    <div id="result">
-        <p>結果がここに表示されます。</p>
+    <div id="result" class="result-columns">
+        <!-- 結果はJavaScriptによってここに挿入されます -->
+        <div id="guild1-container" class="guild-container"></div>
+        <div id="guild2-container" class="guild-container"></div>
     </div>
 </div>
 

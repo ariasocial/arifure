@@ -22,7 +22,7 @@ def get_urls_from_sitemap(sitemap_url):
         print(f"❌ サイトマップ解析中にエラーが発生しました: {e}")
         return []
 
-def scrape_single_page(url):
+def scrape_single_page(url, access_count):
     """単一のURLからデータを取得し、必要な情報を抽出します。"""
     try:
         response = requests.get(url, timeout=15)
@@ -36,12 +36,14 @@ def scrape_single_page(url):
              paragraphs = content_area.find_all('p', recursive=False)
              excerpt = paragraphs[0].text[:100] + "..." if paragraphs else "本文が見つかりません"
         
-        print(f"  - 成功: {title}")
+        # ログにアクセス回目を表示
+        print(f"  - 成功 ({access_count}巡目): {title}") 
         
         # 取得データを辞書で返す
-        return {"title": title, "url": url, "excerpt": excerpt, "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return {"title": title, "url": url, "excerpt": excerpt, "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "access_count": access_count}
     except Exception as e:
-        print(f"  - 失敗: {url} - {e}")
+        # ログにアクセス回目を表示
+        print(f"  - 失敗 ({access_count}巡目): {url} - {e}")
         return None
 
 def run_scraper_with_sitemap():
@@ -54,15 +56,22 @@ def run_scraper_with_sitemap():
 
     all_results = []
     
-    for url in target_urls:
-        result = scrape_single_page(url)
-        if result:
-            all_results.append(result)
+    # 【最重要の変更点】: アクセス回数（巡目）を外側のループにする
+    for access_count in range(1, 4): # 1巡目と2巡目を実行
+        print(f"\n--- 【第{access_count}巡目】アクセス開始 ---")
+        
+        # URLリストを内側のループで一巡処理する
+        for url in target_urls: 
+            result = scrape_single_page(url, access_count)
+            if result:
+                all_results.append(result)
             
-    print("\n========================================")
-    print(f"【処理結果】 成功件数: {len(all_results)} / 対象件数: {len(target_urls)}")
+    # 成功件数と対象件数の計算（以前と同じ）
+    total_target_count = len(target_urls) * 2
+    successful_count = len(all_results)
     
-    # ⚠️ 注意: ログに残すだけでなく、永続化が必要な場合はここに保存処理（JSON/CSV出力、S3/GCSアップロードなど）を追加します。
+    print("\n========================================")
+    print(f"【処理結果】 成功件数: {successful_count} / 対象件数: {total_target_count}")
 
 if __name__ == "__main__":
     run_scraper_with_sitemap()

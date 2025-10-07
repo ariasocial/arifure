@@ -9,15 +9,15 @@ const BASE_URL = `https://w.atwiki.jp/${WIKI_ID}/`;
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version=16.6 Safari/605.1.15'; 
 
 // ★★★ 本番用アクセスパターン設定 ★★★
-// 固定ページIDをカンマ区切りで設定 (例: トップページは「1」、サイトマップは「2」など)
-const FIXED_PAGE_IDS_STRING = '1, 17, 49'; 
-const RANDOM_ACCESS_PERCENTAGE = 30; // 固定ページ以外のページからランダムにアクセスする割合 (30%に設定)
-const PAGE_DELAY_SECONDS = 0.4;     // 安定した最速の待機時間 (0.4秒に固定)
+const FIXED_PAGE_IDS_STRING = '1, 2, 49'; 
+const RANDOM_ACCESS_PERCENTAGE = 30; 
+const PAGE_DELAY_SECONDS = 0.4;     
+const ACCESS_CYCLES = 2; // ★★★ 復活: 1回のCron実行で全リストを何周するか (アクセス回数) ★★★
 // ------------------------------------------
 
 
 /**
- * [UTILITY] 配列をシャッフルする (Fisher-Yates)
+ * [UTILITY] 配列をシャッフルする
  */
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -31,7 +31,6 @@ function shuffleArray(array) {
  * 起動前の遅延 (Cronの固定実行時間を隠蔽)
  */
 async function initialRandomDelay() {
-    // 0秒から最大15分（900秒）の間のランダムな遅延を設ける (Cronのランダム化と併用)
     const delaySeconds = Math.floor(Math.random() * 900); 
     console.log(`Initial random delay: ${delaySeconds} seconds.`);
     await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
@@ -57,18 +56,15 @@ async function getUrlsFromSitemap() {
 }
 
 /**
- * [CORE LOGIC] アクセス対象の最終リストを生成
+ * [CORE LOGIC] アクセス対象の最終リストを生成する
  */
 function generateAccessList(allSitemapUrls) {
-    // 1. 設定された固定IDを数値のSetに変換
     const fixedPageIds = new Set(FIXED_PAGE_IDS_STRING.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)));
 
     const fixedUrls = [];
     let randomCandidates = [];
 
-    // 2. URLを巡回し、固定ページとランダム候補に分ける
     for (const url of allSitemapUrls) {
-        // トップページはID 1として特別扱い。それ以外はURLからIDを抽出
         const isRoot = url === BASE_URL;
         const idMatch = url.match(/\/pages\/(\d+)\.html/);
         const pageId = isRoot ? 1 : (idMatch ? parseInt(idMatch[1]) : null); 
@@ -80,13 +76,8 @@ function generateAccessList(allSitemapUrls) {
         }
     }
 
-    // 3. ランダムにアクセスするページの数を計算
     const selectionCount = Math.floor(randomCandidates.length * (RANDOM_ACCESS_PERCENTAGE / 100));
-
-    // 4. 候補リストをシャッフルし、必要な数だけ選択
     const selectedRandomUrls = shuffleArray(randomCandidates).slice(0, selectionCount);
-
-    // 5. 固定ページとランダム選択ページを結合し、全体をシャッフル
     let finalAccessList = shuffleArray([...new Set([...fixedUrls, ...selectedRandomUrls])]);
 
     console.log(`Access Strategy: Fixed Pages=${fixedUrls.length}, Selected Random=${selectionCount}`);
@@ -99,14 +90,14 @@ function generateAccessList(allSitemapUrls) {
 /**
  * ヘッドレスブラウザで各URLにアクセスする
  */
-async function accessUrls(urls) {
-    if (urls.length === 0) return;
+async function accessUrls(allSitemapUrls, cycles) {
+    if (allSitemapUrls.length === 0) return;
 
     let browser;
     try {
         console.log('Launching browser...');
         browser = await puppeteer.launch({
-            executablePath: '/usr/bin/chromium', 
+            executablePath: '/usr/bin/chromium', // 安定性のためにパスを強制
             args: [
                 '--no-sandbox', 
                 '--disable-setuid-sandbox',
@@ -136,26 +127,32 @@ async function accessUrls(urls) {
         });
         // --- リソースブロック設定完了 ---
 
-        console.log(`Starting access for ${urls.length} selected URLs...`);
+        console.log(`Starting access: ${cycles} full cycles.`);
         
-        // アクセスリストのURLを巡回
-        for (const url of urls) {
-            const accessStart = Date.now();
-            console.log(`Accessing: ${url}`);
-            try {
-                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-                const timeTaken = (Date.now() - accessStart) / 1000;
-                console.log(`  SUCCESS! [Load Time: ${timeTaken.toFixed(2)}s]`);
-                
-                // ★固定待機時間 0.4秒 (安定した最速値)★
-                console.log(`  Waiting for ${PAGE_DELAY_SECONDS} second.`);
-                await new Promise(resolve => setTimeout(resolve, PAGE_DELAY_SECONDS * 1000));
+        for (let j = 1; j <= cycles; j++) { // ★★★ ループ制御 ★★★
+            console.log(`\n--- Starting Cycle ${j}/${cycles} ---`);
+            
+            // サイクルごとにアクセスリストを再生成・再シャッフル
+            const currentAccessList = generateAccessList(allSitemapUrls);
 
-            } catch (pageError) {
-                console.error(`Error accessing ${url}: ${pageError.message}`);
+            for (const url of currentAccessList) {
+                const accessStart = Date.now();
+                console.log(`[Cycle ${j}] Accessing: ${url}`);
+                try {
+                    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+                    const timeTaken = (Date.now() - accessStart) / 1000;
+                    console.log(`  SUCCESS! [Load Time: ${timeTaken.toFixed(2)}s]`);
+                    
+                    // 固定待機時間 0.4秒
+                    console.log(`  Waiting for ${PAGE_DELAY_SECONDS} second.`);
+                    await new Promise(resolve => setTimeout(resolve, PAGE_DELAY_SECONDS * 1000));
+
+                } catch (pageError) {
+                    console.error(`Error accessing ${url}: ${pageError.message}`);
+                }
             }
         }
-
+        
         console.log('Access run finished.');
 
     } catch (browserError) {
@@ -177,11 +174,8 @@ async function main() {
     
     const allUrls = await getUrlsFromSitemap();
     
-    // アクセスリストの生成
-    const finalAccessList = generateAccessList(allUrls);
-    
-    // アクセス処理を実行
-    await accessUrls(finalAccessList);
+    // 生成されたリストを ACCESS_CYCLES 回実行
+    await accessUrls(allUrls, ACCESS_CYCLES);
 }
 
 main();

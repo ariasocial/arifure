@@ -57,7 +57,7 @@ async function getUrlsFromSitemap() {
 }
 
 /**
- * [CORE LOGIC] アクセス対象の最終リストを生成する
+ * [CORE LOGIC] アクセス対象の最終リストを生成
  */
 function generateAccessList(allSitemapUrls) {
     // 1. 設定された固定IDを数値のSetに変換

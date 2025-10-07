@@ -1,0 +1,29 @@
+name: Deploy to OCI
+
+# mainブランチにpushされたときに実行
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # ① リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ② SSH経由でサーバーに接続し、デプロイコマンドを実行
+      - name: Deploy to Server and Build Access Booster
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_USERNAME }}
+          key: ${{ secrets.OCI_SSH_KEY }}
+          port: 22
+          script: |
+            cd ~/ArifureWiki-access-booster
+            git pull
+            cp -r access-booster/. .
+            docker compose up --build -d arifurewiki-access-booster
+            docker image prune -f

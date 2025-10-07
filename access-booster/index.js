@@ -106,7 +106,7 @@ async function accessUrls(urls) {
     try {
         console.log('Launching browser...');
         browser = await puppeteer.launch({
-            // OCIのDocker環境で動作する最小限のargs
+            executablePath: '/usr/bin/chromium', 
             args: [
                 '--no-sandbox', 
                 '--disable-setuid-sandbox',

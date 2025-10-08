@@ -1,3 +1,4 @@
+ // Copyright (c) 2024 A.R.1a
 document.addEventListener('DOMContentLoaded', () => {
     // DOM要素の取得
     const hammerInputs = [

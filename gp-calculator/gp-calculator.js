@@ -1,3 +1,4 @@
+ // Copyright (c) 2024 A.R.1a
 // Get references to the input fields and result display
 const initialWoodenHammerInput = document.getElementById('initialWoodenHammer');
 const initialIronHammerInput = document.getElementById('initialIronHammer');
